@@ -1,6 +1,6 @@
 @setlocal enableextensions enabledelayedexpansion
 @echo OFF
-REM first argument should be the file path to the forum data. The file is expected to end in '.jl'.
+REM first argument should be the file path to the forum data. Example: 'forum/forum_data_sampled.jl'
 
 SET source=%1
 SET source=!source:~0,-3!

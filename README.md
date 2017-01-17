@@ -31,7 +31,7 @@ There are two main uses for the various programs: testing the various setups of 
 To test a setup for the language classifier, you would run a command such as:
 
 ```bash
-	$ test_setup.bat "setups/nguyen6"
+	$ test_setup.bat "setups/nguyen6" "dataset-emnlp2013/"
 ```
 
 To get post level statistics for a language classifier setup, run a command such as:
@@ -59,8 +59,8 @@ This way you can halt the crawler at any time by pressing Ctrl-C and resume it u
 To evaluate the retrieved data use:
 	
 ```bash
-	$ preprocessing.py
-	$ language_classifier.bat path/to/forum_data.jl
+	$ preprocessing.py path/to/forum_data.jl
+	$ language_classifier.bat path/to/forum_data_sampled.jl
 ```
 
 

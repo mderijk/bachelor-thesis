@@ -1,3 +1,5 @@
+import sys
+import os
 import json
 import urllib.parse
 from collections import defaultdict
@@ -82,9 +84,11 @@ def sample(posts, k=50):
 	
 	return sample
 
-def main():
+def preprocess(data_path):
+	data_filename, data_extension = os.path.splitext(data_path)
+	
 	# load
-	with open('forum/forum_data.jl', encoding='utf-8') as source:
+	with open(data_path, encoding='utf-8') as source:
 		posts = [json.loads(line.strip()) for line in source]
 	
 	# cleaning
@@ -92,7 +96,7 @@ def main():
 		clean(post)
 	posts = [post for post in posts if post['content']] # discard empty posts
 	
-	with open('forum/forum_data_cleaned.jl', 'w', encoding='utf-8') as target:
+	with open(data_filename + '_cleaned.jl', 'w', encoding='utf-8') as target:
 		for post in posts:
 			print(json.dumps(post), file=target)
 	
@@ -105,9 +109,15 @@ def main():
 		post['content'] = tt.tokenize(post['content'])
 	
 	# save
-	with open('forum/forum_data_sampled.jl', 'w', encoding='utf-8') as target:
+	with open(data_filename + '_sampled.jl', 'w', encoding='utf-8') as target:
 		for post in posts:
 			print(json.dumps(post), file=target)
 
+def main(argv):
+	if len(argv) == 2 and argv[1].endswith('.jl'):
+		preprocess(argv[1])
+	else:
+		print("Usage: {} <path/to/data.jl>".format(argv[0]), file=sys.stderr)
+
 if __name__ == '__main__':
-	main()
+	main(sys.argv)
