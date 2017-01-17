@@ -1,12 +1,13 @@
 @echo OFF
-REM arguments are the folder names to the source, target and chunker with standard names.
+REM the first argument should the path to a setup folder. The second argument should be the path to a folder containing Nguyen's dataset.
 
-SET source=%1
+SET setup=%1
+SET dataset=%2
 
-python %source%/chunker/chunking.py < %source%/train.txt > %source%/train.crfsuite.txt
-python %source%/chunker/chunking.py < %source%/dev.txt > %source%/dev.crfsuite.txt
-python %source%/chunker/chunking.py < %source%/test.txt > %source%/test.crfsuite.txt
+python %setup%/featurizer.py %dataset% %setup%
+python %setup%/chunker/chunking.py < %setup%/features/train.txt > %setup%/features/train.crfsuite.txt
+python %setup%/chunker/chunking.py < %setup%/features/dev.txt > %setup%/features/dev.crfsuite.txt
+python %setup%/chunker/chunking.py < %setup%/features/test.txt > %setup%/features/test.crfsuite.txt
 
-@echo ON
-crfsuite learn -m %source%/CoNLL2000.model %source%/train.crfsuite.txt
-crfsuite tag -qt -m %source%/CoNLL2000.model %source%/dev.crfsuite.txt
+crfsuite learn -m %setup%/CoNLL2000.model %setup%/features/train.crfsuite.txt
+crfsuite tag -qt -m %setup%/CoNLL2000.model %setup%/features/dev.crfsuite.txt
